@@ -2,12 +2,16 @@ import {
     PrimaryGeneratedColumn, 
     Column, 
     UpdateDateColumn, 
-    CreateDateColumn 
+    CreateDateColumn, 
+    Entity,
+    OneToOne
 } from 'typeorm';
 
-import {ProductsEntity} from "./Products.entity";
+import {ProductsEntity} from "./products.entity";
+import { UserEntity } from './User.entity';
 
-export abstract class CartEntity {
+@Entity()
+export class CartEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -19,4 +23,7 @@ export abstract class CartEntity {
 
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     lastChangedDateTime: Date;
+
+    @OneToOne(() => UserEntity, (user: UserEntity) => user.cart)
+    public user: UserEntity;
 }

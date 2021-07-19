@@ -2,12 +2,16 @@ import {
     PrimaryGeneratedColumn, 
     Column, 
     UpdateDateColumn, 
-    CreateDateColumn 
+    CreateDateColumn, 
+    Entity,
+    OneToOne
 } from 'typeorm';
 
-import {ProductsEntity} from "./Products.entity";
+import {ProductsEntity} from "./products.entity";
+import { UserEntity } from './User.entity';
 
-export abstract class WishListEntity {
+@Entity()
+export class WishListEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -19,4 +23,7 @@ export abstract class WishListEntity {
 
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     lastChangedDateTime: Date;
+
+    @OneToOne(() => UserEntity, (user: UserEntity) => user.wishList)
+    public user: UserEntity;
 }

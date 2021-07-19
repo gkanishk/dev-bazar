@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import {ProductsEntity} from "../model/products.entity";
 
 require('dotenv').config();
 
@@ -44,6 +45,10 @@ class ConfigService {
       migrationsTableName: 'migration',
 
       migrations: ['src/migration/*.ts'],
+
+      migrationsRun: true,
+
+      synchronize: true,
 
       cli: {
         migrationsDir: 'src/migration',

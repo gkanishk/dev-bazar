@@ -4,26 +4,30 @@ import {
     UpdateDateColumn, 
     CreateDateColumn,
     OneToOne,
-    JoinColumn 
+    JoinColumn, 
+    Entity,
+    BeforeInsert
 } from 'typeorm';
 
 import {CartEntity} from "./Cart.entity";
 import {WishListEntity} from "./WishList.entity";
 
 import { IsEmail } from "class-validator";
+import * as bcrypt from "bcrypt";
 
-export abstract class UserEntity {
+@Entity()
+export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'string'})
+    @Column()
     name: string;
 
-    @Column({ type: 'string', unique: true })
+    @Column({ unique: true })
     @IsEmail()
     email: string;
 
-    @Column({ type: 'string' })
+    @Column()
     password: string;
 
     @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
@@ -32,11 +36,20 @@ export abstract class UserEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     lastChangedDateTime: Date;
 
-    @OneToOne(() => CartEntity)
+    @OneToOne(() => CartEntity,{
+        eager: true,
+        cascade: true
+    })
     @JoinColumn()
     cart: CartEntity;
 
-    @OneToOne(() => WishListEntity)
+    @OneToOne(() => WishListEntity, {eager: true})
     @JoinColumn()
     wishList: WishListEntity;
+
+    @BeforeInsert()
+    async setPassword(password: string) {
+        const salt = await bcrypt.genSalt();
+        this.password = await bcrypt.hash(password || this.password, salt);
+    }
 }

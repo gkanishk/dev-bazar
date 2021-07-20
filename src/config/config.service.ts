@@ -8,7 +8,7 @@ class ConfigService {
   constructor(private env: { [k: string]: string | undefined }) { }
 
   private getValue(key: string, throwOnMissing = true): string {
-    const value = this.env[key];
+    const value = process.env[key];
     if (!value && throwOnMissing) {
       throw new Error(`config error - missing env.${key}`);
     }
@@ -50,7 +50,10 @@ class ConfigService {
         migrationsDir: 'src/migration',
       },
 
-      ssl: this.isProduction(),
+      extra: {
+        ssl: this.isProduction()? { rejectUnauthorized: false }
+        : false,
+      }
     };
   }
 

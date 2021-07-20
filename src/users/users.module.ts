@@ -6,7 +6,7 @@ import { UserEntity } from '../model/User.entity';
 import { CartEntity } from '../model/Cart.entity';
 import { WishListEntity } from '../model/WishList.entity';
 import { AuthModule } from '../auth/auth.module';
-import { ProductsEntity } from '../model/products.entity';
+import { ProductsEntity } from '../model/Products.entity';
 
 @Module({
   imports: [

@@ -7,7 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import * as bcrypt from "bcrypt";
 import { CartEntity } from '../model/Cart.entity';
 import { WishListEntity } from '../model/WishList.entity';
-import { ProductsEntity } from '../model/products.entity';
+import { ProductsEntity } from '../model/Products.entity';
 const { v4: uuidv4 } = require('uuid');
 
 @Injectable()

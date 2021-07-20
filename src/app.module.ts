@@ -10,7 +10,12 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () =>
+        Object.assign(await configService.getTypeOrmConfig(), {
+          autoLoadEntities: true,
+        }),
+    }),
     AuthModule,
     ProductsModule,
     UsersModule

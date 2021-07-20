@@ -7,7 +7,7 @@ import {
     OneToOne
 } from 'typeorm';
 
-import {ProductsEntity} from "./products.entity";
+import {ProductsEntity} from "./Products.entity";
 import { UserEntity } from './User.entity';
 
 @Entity()

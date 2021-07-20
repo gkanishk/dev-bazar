@@ -43,7 +43,10 @@ export class UserEntity {
     @JoinColumn()
     cart: CartEntity;
 
-    @OneToOne(() => WishListEntity, {eager: true})
+    @OneToOne(() => WishListEntity, {
+        eager: true,
+        cascade: true
+    })
     @JoinColumn()
     wishList: WishListEntity;
 

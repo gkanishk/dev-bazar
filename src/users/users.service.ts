@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../model/User.entity';
 import { response, userDetails } from '../utills/interfaces';
@@ -44,7 +44,11 @@ export class UsersService {
         return {
             statusCode:200,
             response: {
-                accessToken
+                accessToken,
+                user: {
+                    email: user.email,
+                    name: user.name
+                }
             },
             message: "Sign Up successfull!!"
         }
@@ -59,7 +63,13 @@ export class UsersService {
                 const accessToken = await this.authService.createAccessToken(findUser);
                 return {
                     statusCode: 200,
-                    response: {accessToken},
+                    response: {
+                        accessToken,
+                        user: {
+                            email: findUser.email,
+                            name: findUser.name
+                        }
+                    },
                     message: "Login Successfull!!"
                 }
             }
@@ -125,6 +135,52 @@ export class UsersService {
                 message: "Success",
                 response: {wishList:wishListItems}
             }
+        }throw new UnauthorizedException("Invalid Credentials");
+    }
+
+    async addToWishList(userId: string,wishListItem:{productId:string}):Promise<response> {
+        const findUser = await this.userRepo.findOne({id:userId});
+        if(findUser){
+            const wishListItems = findUser.wishList.wishListems;
+            const findItem = wishListItems.find(({item:{id}})=>id===wishListItem.productId);
+            if(findItem){
+                throw new UnprocessableEntityException("Item already exists");
+            }
+            const product = await this.productRepo.findOne({id:wishListItem.productId});
+            if(product){
+                findUser.wishList.wishListems.push({item:product});
+                await this.userRepo.save(findUser);
+                return {
+                    statusCode: 200,
+                    message: "Success",
+                    response: {
+                        wishList: findUser.wishList.wishListems
+                    }
+                }
+            }throw new UnprocessableEntityException("Product with given id doesn't exists"); 
+        }throw new UnauthorizedException("Invalid Credentials");
+    }
+
+    async addToCart(userId: string,wishListItem:{productId:string}):Promise<response> {
+        const findUser = await this.userRepo.findOne({id:userId});
+        if(findUser){
+            const cartItems = findUser.cart.cartItems;
+            const findItem = cartItems.find(({item:{id}})=>id===wishListItem.productId);
+            if(findItem){
+                throw new UnprocessableEntityException("Item already exists");
+            }
+            const product = await this.productRepo.findOne({id:wishListItem.productId});
+            if(product){
+                findUser.cart.cartItems.push({item:product,count: 1});
+                await this.userRepo.save(findUser);
+                return {
+                    statusCode: 200,
+                    message: "Success",
+                    response: {
+                        wishList: findUser.cart.cartItems
+                    }
+                }
+            }throw new UnprocessableEntityException("Product with given id doesn't exists");
         }throw new UnauthorizedException("Invalid Credentials");
     }
 }

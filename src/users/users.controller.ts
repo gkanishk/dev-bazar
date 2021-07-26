@@ -92,4 +92,36 @@ export class UsersController {
         return await this.service.updateWishList(req.user.userId,wishListItems)
     }
 
+    @Post("addToCart")
+    @UseGuards(JwtAuthGuard)
+    @ApiTags('user')
+    @ApiBearerAuth()
+    @ApiBody({
+        schema: {
+            example:
+                {
+                    "productId": "25712c05-0c46-41a9-bd07-92fc44d665fe"
+                }
+        }
+    })
+    async addToCart(@Request() req:any,@Body() wishListItem:{productId:string}): Promise<response> {
+        return await this.service.addToCart(req.user.userId,wishListItem)
+    }
+
+    @Post("addToWishList")
+    @UseGuards(JwtAuthGuard)
+    @ApiTags('user')
+    @ApiBearerAuth()
+    @ApiBody({
+        schema: {
+            example:
+                {
+                    "productId": "25712c05-0c46-41a9-bd07-92fc44d665fe"
+                }
+        }
+    })
+    async addToWishList(@Request() req:any,@Body() wishListItem:{productId:string}): Promise<response> {
+        return await this.service.addToWishList(req.user.userId,wishListItem)
+    }
+
 }

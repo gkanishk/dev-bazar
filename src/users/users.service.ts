@@ -67,7 +67,9 @@ export class UsersService {
                         accessToken,
                         user: {
                             email: findUser.email,
-                            name: findUser.name
+                            name: findUser.name,
+                            cart: findUser.cart.cartItems,
+                            wishlist: findUser.wishList.wishListems
                         }
                     },
                     message: "Login Successfull!!"

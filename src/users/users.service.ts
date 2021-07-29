@@ -166,11 +166,6 @@ export class UsersService {
     async addToCart(userId: string,wishListItem:{productId:string}):Promise<response> {
         const findUser = await this.userRepo.findOne({id:userId});
         if(findUser){
-            const cartItems = findUser.cart.cartItems;
-            const findItem = cartItems.find(({item:{id}})=>id===wishListItem.productId);
-            if(findItem){
-                throw new UnprocessableEntityException("Item already exists");
-            }
             const product = await this.productRepo.findOne({id:wishListItem.productId});
             if(product){
                 findUser.cart.cartItems.push({item:product,count: 1});

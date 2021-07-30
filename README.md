@@ -4,7 +4,7 @@
 
 
 ## Description
-Ecommerce backend for [Dev Bazar](https://github.com/gkanishk/dev-bazar-fe) 
+Ecommerce backend for [Dev Bazar](https://github.com/gkanishk/dev-bazar-fe). Check API documentation [here](https://devbazar.herokuapp.com/api/)
 
 ### Build using:
 - [Nest](https://github.com/nestjs/nest)

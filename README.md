@@ -34,3 +34,9 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Connect In-house DB using docker:
+
+```
+$ npm run start:dev:db
+```
+

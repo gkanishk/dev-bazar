@@ -14,7 +14,8 @@
     "start:dev": "nodemon --config nodemon.json",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main.js",
-    "postinstall": "npm run prebuild && npm run pretypeorm",
+    "postinstall": "npm run prebuild && npm run configorm",
+    "configorm": "ts-node -r tsconfig-paths/register src/scripts/ormconf.ts",
     "pretypeorm": "(rm ormconfig.json || :) && ts-node -r tsconfig-paths/register src/scripts/ormconf.ts",
     "typeorm": "npx typeorm migration:create -n migrationName",
     "migration": "yarn typeorm migration:run",
@@ -37,7 +38,7 @@
     "@nestjs/passport": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.0.4",
-    "@nestjs/typeorm": "^8.0.1",
+    "@nestjs/typeorm": "8.0.2",
     "bcrypt": "^5.0.1",
     "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
@@ -51,7 +52,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.1.6",
-    "typeorm": "^0.2.34"
+    "typeorm": "0.2.45"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

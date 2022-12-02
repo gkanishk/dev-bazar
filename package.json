@@ -14,7 +14,7 @@
     "start:dev": "nodemon --config nodemon.json",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main.js",
-    "postinstall": "npm run prebuild && npm run typeorm",
+    "postinstall": "npm run prebuild && npm run pretypeorm",
     "pretypeorm": "(rm ormconfig.json || :) && ts-node -r tsconfig-paths/register src/scripts/ormconf.ts",
     "typeorm": "npx typeorm migration:create -n migrationName",
     "migration": "yarn typeorm migration:run",

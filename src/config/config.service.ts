@@ -1,10 +1,9 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import {ProductsEntity} from "../model/Products.entity";
+import { ProductsEntity } from '../model/Products.entity';
 
 require('dotenv').config();
 
 class ConfigService {
-
   constructor(private env: { [k: string]: string | undefined }) { }
 
   private getValue(key: string, throwOnMissing = true): string {
@@ -17,7 +16,7 @@ class ConfigService {
   }
 
   public ensureValues(keys: string[]) {
-    keys.forEach(k => this.getValue(k, true));
+    keys.forEach((k) => this.getValue(k, true));
     return this;
   }
 
@@ -46,27 +45,20 @@ class ConfigService {
 
       synchronize: true,
 
-      cli: {
-        migrationsDir: 'src/migration',
-      },
-
       extra: {
-        ssl: this.isProduction()? { rejectUnauthorized: false }
-        : false,
-      }
+        ssl: this.isProduction() ? { rejectUnauthorized: false } : false,
+      },
     };
   }
-
 }
 
-const configService = new ConfigService(process.env)
-  .ensureValues([
-    'POSTGRES_HOST',
-    'POSTGRES_PORT',
-    'POSTGRES_USER',
-    'POSTGRES_PASSWORD',
-    'POSTGRES_DATABASE',
-    'DATABASE_URL'
-  ]);
+const configService = new ConfigService(process.env).ensureValues([
+  'POSTGRES_HOST',
+  'POSTGRES_PORT',
+  'POSTGRES_USER',
+  'POSTGRES_PASSWORD',
+  'POSTGRES_DATABASE',
+  'DATABASE_URL',
+]);
 
 export { configService };

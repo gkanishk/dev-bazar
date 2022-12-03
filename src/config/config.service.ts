@@ -1,5 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ProductsEntity } from '../model/Products.entity';
 
 require('dotenv').config();
 
@@ -35,6 +34,8 @@ class ConfigService {
 
       url: this.getValue('DATABASE_URL'),
 
+      database: this.getValue('POSTGRES_DATABASE'),
+
       entities: ['**/*.entity{.ts,.js}'],
 
       migrationsTableName: 'migration',
@@ -43,7 +44,11 @@ class ConfigService {
 
       migrationsRun: true,
 
-      synchronize: true,
+      synchronize: false,
+
+      cli: {
+        migrationsDir: 'src/migration',
+      },
 
       extra: {
         ssl: this.isProduction() ? { rejectUnauthorized: false } : false,

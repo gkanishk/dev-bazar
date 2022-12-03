@@ -1,4 +1,4 @@
-import { NestFactory, } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './httpExceptionFilter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -6,7 +6,9 @@ import * as helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://gkanishk-devbazar.vercel.app'],
+  });
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const options = new DocumentBuilder()
@@ -18,6 +20,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
-  await app.listen(parseInt(process.env.PORT) ||3000);
+  await app.listen(parseInt(process.env.PORT) || 3000);
 }
 bootstrap();
